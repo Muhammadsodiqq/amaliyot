@@ -4,9 +4,10 @@ import morgan from "morgan"
 import helmet from "helmet"
 import path from 'path'
 import http from 'http'
+import dotenv from 'dotenv'
 import routes from "./routes/routes.js"
 import data from "./modules/postgres.js"
-
+dotenv.config()
 async function main () {
     const app = express()
     const server = http.createServer(app)
@@ -28,8 +29,7 @@ async function main () {
     //routes
     routes(app)
 
-   
-    server.listen(80, _ => console.log("server ready"))
+    server.listen(process.env.PORT, _ => console.log("server ready"))
 }
 
 main()

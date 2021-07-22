@@ -62,4 +62,46 @@ export default class userController {
             })
         }
     }
+
+    static async getUser(req,res) {
+        try {
+            let user = await req.db.users.findOne({
+                user_id:req.user.user_id
+            })
+
+            if(!user) throw"token is incorrect"
+            res.status(200).json({
+                ok:true,
+                message:"user info",
+                data:user.dataValues
+            })
+        } catch (error) {
+            console.log(error);
+            res.status(400).json({
+                ok:false,
+                message:error + ""
+            })
+        }
+    }
+
+    static async getUsers(req,res) {
+        try {
+            let user = await req.db.users.findAll({
+                user_userName:req.body.username
+            })
+
+            if(!user) throw"token is incorrect"
+            res.status(200).json({
+                ok:true,
+                message:"user info",
+                data:user.dataValues
+            })
+        } catch (error) {
+            console.log(error);
+            res.status(400).json({
+                ok:false,
+                message:error + ""
+            })
+        }
+    }
 }

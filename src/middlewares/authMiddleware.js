@@ -1,4 +1,4 @@
-import jwt from "../modules/jwt";
+import jwt from "../modules/jwt.js";
 
 export default  async function authMiddleware(req,res,next){
     try {
@@ -6,7 +6,8 @@ export default  async function authMiddleware(req,res,next){
 
         let token = req.headers.authorization
 
-        token = jwt.checktToken(token)
+        token = await jwt.checktToken(token)
+        // console.log(token.id);
         const user = await req.db.users.findOne({
             where:{
                 user_id:token.id

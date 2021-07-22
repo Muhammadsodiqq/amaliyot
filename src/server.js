@@ -16,11 +16,11 @@ async function main () {
     const __dirname = path.resolve(path.dirname(""))
     
     //middlewares
+    app.use(express.json())
+    app.use(express.urlencoded({extended:true}))
     app.use(cors())
     app.use(helmet())
     app.use(morgan("dev"))
-    app.use(express.json())
-    app.use(express.urlencoded({extended:true}))
     app.use(async function (req,res, next)  {
         req.db = db
         next()

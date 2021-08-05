@@ -41,7 +41,7 @@ export default class userController {
                     user_email:data.email
                 }
             })
-
+            console.log(user);
             if (!user) throw "user not found"
             const isValid = await bcrypt.compareCrypt(data.password,user.dataValues.user_password)
 
@@ -52,7 +52,8 @@ export default class userController {
                 message:"Successfully logged",
                 token:await jwt.generateToken({
                     id:user.dataValues.user_id
-                })
+                }),
+                data:user.dataValues,
             })
         } catch (error) {
             res.status(400).json({
@@ -64,15 +65,11 @@ export default class userController {
 
     static async getUser(req,res) {
         try {
-            let user = await req.db.users.findOne({
-                user_id:req.user.user_id
-            })
 
-            if(!user) throw"token is incorrect"
             res.status(200).json({
                 ok:true,
                 message:"user info",
-                data:user.dataValues
+                data:req.user,
             })
         } catch (error) {
             console.log(error);
@@ -190,7 +187,9 @@ export default class userController {
                 data:user
             })
         } catch (error) {
-            res.status(400).json({
+            if ((error == 'SequelizeUniqueConstraintError: Validation error')) {
+                error = "  username already exist";
+            }            res.status(400).json({
                 ok:false,
                 message:error + "",
                 

@@ -22,6 +22,7 @@ export default class validations {
                 .min(3)
                 .error(Error("username Must be more than 3 letters"))
                 .max(25)
+                .lowercase()
                 .error(Error("username Must be less than 25 letters"))
                 .error(Error("username is incorrect")),
             email:Joi.string()
